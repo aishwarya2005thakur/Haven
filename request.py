@@ -1,49 +1,55 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
 import requests
 import json
-import gradio as gr
+from fastapi.middleware.cors import CORSMiddleware
 
-# Ollama API URL
-url = "http://localhost:11434/api/generate"
+# Initialize FastAPI app
+app = FastAPI()
 
-headers = {
-    'Content-Type': 'application/json',
-}
-
-history = []  # Store chat history
-
-def generate_response(prompt):
-    history.append(prompt)  # Store user input
-    final_prompt = "\n".join(history)  # Maintain conversation history
-
-    # Request payload
-    data = {
-        'model': 'gemma2:2b',  # Ensure you have this model downloaded in Ollama
-        'temperature': 1,
-        'prompt': final_prompt,
-        'stream': False  # Change to True if you want streaming responses
-    }
-
-    # Send request to Ollama API
-    try:
-        response = requests.post(url, headers=headers, data=json.dumps(data))
-        response.raise_for_status()  # Raise an error for bad responses (4xx, 5xx)
-        
-        result = response.json()
-        actual_response = result.get('response', 'Sorry, I couldn’t process that.')
-        
-        history.append(actual_response)  # Store AI's response
-        return actual_response
-
-    except requests.exceptions.RequestException as e:
-        return f"Error: {str(e)}"
-
-# Gradio Interface
-interface = gr.Interface(
-    fn=generate_response,
-    inputs=gr.Textbox(label="Type anything on your mind. No judgment, just support."),
-    outputs=gr.Textbox(label="Hello! I'm here to listen. How are you feeling today?"),
-    live=True  # Ensure the interface updates in real-time
+# Allow frontend to communicate with backend (CORS policy)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to your frontend URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-# Launch Gradio App
-interface.launch()
+# Ollama API URL
+OLLAMA_URL = "http://localhost:11434/api/generate"
+
+# Request model
+class ChatRequest(BaseModel):
+    message: str
+
+history = []  # Chat history
+
+@app.post("/chat")
+async def chat(request: ChatRequest):
+    history.append(request.message)
+    final_prompt = "\n".join(history)
+
+    data = {
+        'model': 'gemma2:2b',
+        'temperature': 1,
+        'prompt': final_prompt,
+        'stream': False
+    }
+
+    try:
+        response = requests.post(OLLAMA_URL, json=data)
+        response.raise_for_status()
+        result = response.json()
+        actual_response = result.get('response', 'Sorry, I couldn’t process that.')
+
+        history.append(actual_response)  # Store response in history
+        return {"response": actual_response}
+    
+    except requests.exceptions.RequestException as e:
+        return {"response": f"Error: {str(e)}"}
+
+# Run server with Uvicorn
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=8080)

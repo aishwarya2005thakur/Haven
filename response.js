@@ -1,4 +1,4 @@
-async function getResponse() {
+async function sendmessage() {
     let userText = document.getElementById("userInput").value;
     let responseBox = document.getElementById("response");
 
@@ -11,7 +11,7 @@ async function getResponse() {
     // Placeholder while fetching
 
     try {
-        let response = await fetch("http://localhost:11434/api/generate", {
+        let response = await fetch("http://localhost:8080/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ model: "mistral", prompt: userText })
@@ -20,7 +20,7 @@ async function getResponse() {
         let data = await response.json();
         responseBox.value = data.response || "I couldn't understand that. Can you please explain again?";
     } catch (error) {
-        responseBox.value = "Error!!";
+        responseBox.value = "Error! couldn't connect to server";
     }
 }
 const defaultResponses = [
