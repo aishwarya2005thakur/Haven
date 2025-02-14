@@ -3,73 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Therapist</title>
+    <title>Haven - Your Personal Therapist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            background: linear-gradient(to right, #a8edea, #fed6e3);
-            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #B7E4C7, #74C69D);
+            font-family: 'Poppins', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             height: 100vh;
             margin: 0;
+            color: #2D6A4F;
+            text-align: center;
         }
         .container {
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             width: 50%;
-            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-top: 0;
         }
         .input-area, .response-area {
             margin-top: 20px;
+            width: 100%;
         }
         textarea {
             width: 100%;
-            height: 80px;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #ccc;
+            height: 100px;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #2D6A4F;
+            font-size: 1rem;
             resize: none;
+            font-family: 'Poppins', sans-serif;
+            background: rgba(255, 255, 255, 0.8);
         }
         button {
             margin-top: 10px;
-            padding: 10px 20px;
-            background: #77c4d3;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            background: #40916C;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
+            transition: background 0.3s;
+            margin-right: 10px;
         }
         button:hover {
-            background: #5aa6b1;
+            background: #2D6A4F;
         }
     </style>
 </head>
 <body>
-    <h1>Personal Therapist</h1>
+    <h1>Welcome to Haven 🌿</h1>
+    <p>Your safe space to express, reflect, and heal.</p>
     <div class="container">
         <div class="input-area">
-            <textarea id="userInput" placeholder="Talk to your personal therapist..."></textarea>
+            <textarea id="userInput" placeholder="What's on your mind today?"></textarea>
             <button onclick="getResponse()">Submit</button>
+            <button onclick="clearText()">Clear</button>
         </div>
         <div class="response-area">
-            <textarea id="response" readonly placeholder="Response will appear here..."></textarea>
+            <textarea id="response" readonly placeholder="Haven is listening..."></textarea>
         </div>
     </div>
     
-    <script>
-        function getResponse() {
-            let userText = document.getElementById("userInput").value;
-            let responseBox = document.getElementById("response");
-            if (userText.trim() === "") {
-                responseBox.value = "Please enter a message.";
-                return;
-            }
-            responseBox.value = "I hear you. It's important to acknowledge your feelings. What else is on your mind?";
-        }
+    <script src="response.js">
     </script>
 </body>
 </html>
