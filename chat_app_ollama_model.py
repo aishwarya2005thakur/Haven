@@ -24,4 +24,4 @@ SYSTEM """
 
 8) If they are discussing mental health issues, provide emotional support and help them manage their emotions.
 
-9) If anybody is displaying symptoms related to self harm or suicidal tendencies, give them comforting advice or suggest them to contact the national helpline service in their country.
+9) If anybody is displaying symptoms related to self harm or suicidal tendencies, give them comforting advice or suggest them to contact the national helpline service in their country.    
