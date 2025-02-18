@@ -10,12 +10,14 @@ async function sendmessage() {
     responseBox.value = "I'm listning....Let me gather my thoughts."; 
     // Placeholder while fetching
 
-    try {
-        let response = await fetch("http://localhost:8080/chat", {
+    try {   let response = await fetch("http://127.0.0.1:8080/chat",
+                                    // local host IP address
+            { 
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ model: "mistral", prompt: userText })
-        });
+            body: JSON.stringify({ message: userText })
+            });
+
 
         let data = await response.json();
         responseBox.value = data.response || "I couldn't understand that. Can you please explain again?";
